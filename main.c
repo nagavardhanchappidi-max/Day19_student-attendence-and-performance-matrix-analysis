@@ -3,8 +3,8 @@
 int main() {
 
     char studentNames[5][20];
-    int att[5][5];
-    int score[5][5];
+    int attendanceRecord[5][5];
+    int marksRecord[5][5];
     int row, col, menuChoice;
 
     printf("Enter names of 5 students:\n");
@@ -15,14 +15,14 @@ int main() {
     printf("\nEnter Attendance (1 for Present, 0 for Absent):\n");
     for (row = 0; row < 5; row++) {
         for (col = 0; col < 5; col++) {
-            scanf("%d", &att[row][col]);
+            scanf("%d", &attendanceRecord[row][col]);
         }
     }
 
     printf("\nEnter Marks (0-100):\n");
     for (row = 0; row < 5; row++) {
         for (col = 0; col < 5; col++) {
-            scanf("%d", &score[row][col]);
+            scanf("%d", &marksRecord[row][col]);
         }
     }
 
@@ -38,138 +38,138 @@ int main() {
         printf("Enter your choice: ");
         scanf("%d", &menuChoice);
 
-    
-        if (menuChoice == 1) {
-            printf("\nAttendance Matrix:\n");
-            for (row = 0; row < 5; row++) {
-                for (col = 0; col < 5; col++) {
-                    printf("%d ", att[row][col]);
+        switch(menuChoice) {
+
+            case 1:
+                printf("\nAttendance Matrix:\n");
+                for (row = 0; row < 5; row++) {
+                    for (col = 0; col < 5; col++) {
+                        printf("%d ", attendanceRecord[row][col]);
+                    }
+                    printf("\n");
                 }
-                printf("\n");
-            }
-        }
+                break;
 
-        else if (menuChoice == 2) {
-            printf("\nMarks Matrix:\n");
-            for (row = 0; row < 5; row++) {
-                for (col = 0; col < 5; col++) {
-                    printf("%d ", score[row][col]);
+            case 2:
+                printf("\nMarks Matrix:\n");
+                for (row = 0; row < 5; row++) {
+                    for (col = 0; col < 5; col++) {
+                        printf("%d ", marksRecord[row][col]);
+                    }
+                    printf("\n");
                 }
-                printf("\n");
-            }
-        }
+                break;
 
-        else if (menuChoice == 3) {
+            case 3: {
+                int presentCount[5], absentCount[5];
+                int maxAttendance = 0, minAttendance = 5;
+                int maxIndex = 0, minIndex = 0;
 
-            int presentCount[5];
-            int absentCount[5];
-            int maxAtt = 0, minAtt = 5;
-            int maxIndex = 0, minIndex = 0;
-
-            for (row = 0; row < 5; row++) {
-                presentCount[row] = 0;
-                absentCount[row] = 0;
-            }
-
-            for (row = 0; row < 5; row++) {
-                for (col = 0; col < 5; col++) {
-                    if (att[row][col] == 1)
-                        presentCount[row]++;
-                    else
-                        absentCount[row]++;
+                for (row = 0; row < 5; row++) {
+                    presentCount[row] = 0;
+                    absentCount[row] = 0;
                 }
-            }
 
-            for (row = 0; row < 5; row++) {
-                if (presentCount[row] > maxAtt) {
-                    maxAtt = presentCount[row];
-                    maxIndex = row;
+                for (row = 0; row < 5; row++) {
+                    for (col = 0; col < 5; col++) {
+                        if (attendanceRecord[row][col] == 1)
+                            presentCount[row]++;
+                        else
+                            absentCount[row]++;
+                    }
                 }
-                if (presentCount[row] < minAtt) {
-                    minAtt = presentCount[row];
-                    minIndex = row;
+
+                for (row = 0; row < 5; row++) {
+                    if (presentCount[row] > maxAttendance) {
+                        maxAttendance = presentCount[row];
+                        maxIndex = row;
+                    }
+                    if (presentCount[row] < minAttendance) {
+                        minAttendance = presentCount[row];
+                        minIndex = row;
+                    }
                 }
-            }
 
-            printf("\nAttendance Report:\n");
-            for (row = 0; row < 5; row++) {
-                printf("%s -> Present: %d, Absent: %d\n",
-                       studentNames[row], presentCount[row], absentCount[row]);
-            }
-
-            printf("Highest Attendance : %s (%d)\n", studentNames[maxIndex], maxAtt);
-            printf("Lowest Attendance  : %s (%d)\n", studentNames[minIndex], minAtt);
-        }
-
-        else if (menuChoice == 4) {
-
-            int totalScore[5];
-            float avgScore[5];
-            int topper = 0, low = 0;
-
-            for (row = 0; row < 5; row++) {
-                totalScore[row] = 0;
-            }
-
-            for (row = 0; row < 5; row++) {
-                for (col = 0; col < 5; col++) {
-                    totalScore[row] += score[row][col];
+                printf("\nAttendance Report:\n");
+                for (row = 0; row < 5; row++) {
+                    printf("%s -> Present: %d, Absent: %d\n",
+                           studentNames[row], presentCount[row], absentCount[row]);
                 }
-                avgScore[row] = totalScore[row] / 5.0;
+
+                printf("Highest Attendance: %s (%d)\n", studentNames[maxIndex], maxAttendance);
+                printf("Lowest Attendance : %s (%d)\n", studentNames[minIndex], minAttendance);
+                break;
             }
 
-            for (row = 1; row < 5; row++) {
-                if (totalScore[row] > totalScore[topper]) {
-                    topper = row;
+            case 4: {
+                int totalMarks[5];
+                float avgMarks[5];
+                int topper = 0, lowest = 0;
+
+                for (row = 0; row < 5; row++) {
+                    totalMarks[row] = 0;
+                    for (col = 0; col < 5; col++) {
+                        totalMarks[row] += marksRecord[row][col];
+                    }
+                    avgMarks[row] = totalMarks[row] / 5.0;
                 }
-                if (totalScore[row] < totalScore[low]) {
-                    low = row;
+
+                for (row = 1; row < 5; row++) {
+                    if (totalMarks[row] > totalMarks[topper])
+                        topper = row;
+                    if (totalMarks[row] < totalMarks[lowest])
+                        lowest = row;
                 }
-            }
 
-            printf("\nPerformance Report:\n");
-            for (row = 0; row < 5; row++) {
-                printf("%s -> Total: %d, Average: %.2f\n",
-                       studentNames[row], totalScore[row], avgScore[row]);
-            }
-
-            printf("Class Topper     : %s (%d)\n",
-                   studentNames[topper], totalScore[topper]);
-            printf("Lowest Performer : %s (%d)\n",
-                   studentNames[low], totalScore[low]);
-        }
-
-        else if (menuChoice == 5) {
-
-            int totalScore[5];
-            float avg[5];
-            char grade;
-
-            for (row = 0; row < 5; row++) {
-                totalScore[row] = 0;
-                for (col = 0; col < 5; col++) {
-                    totalScore[row] += score[row][col];
+                printf("\nPerformance Report:\n");
+                for (row = 0; row < 5; row++) {
+                    printf("%s -> Total: %d, Average: %.2f\n",
+                           studentNames[row], totalMarks[row], avgMarks[row]);
                 }
-                avg[row] = totalScore[row] / 5.0;
+
+                printf("Class Topper     : %s (%d)\n", studentNames[topper], totalMarks[topper]);
+                printf("Lowest Performer : %s (%d)\n", studentNames[lowest], totalMarks[lowest]);
+                break;
             }
 
-            printf("\nGrade Report:\n");
-            for (row = 0; row < 5; row++) {
+            case 5: {
+                int totalMarks[5];
+                float avgMarks[5];
+                char grade;
 
-                if (avg[row] >= 90) grade = 'A';
-                else if (avg[row] >= 80) grade = 'A';
-                else if (avg[row] >= 70) grade = 'B';
-                else if (avg[row] >= 60) grade = 'C';
-                else if (avg[row] >= 50) grade = 'D';
-                else grade = 'F';
+                for (row = 0; row < 5; row++) {
+                    totalMarks[row] = 0;
+                    for (col = 0; col < 5; col++) {
+                        totalMarks[row] += marksRecord[row][col];
+                    }
+                    avgMarks[row] = totalMarks[row] / 5.0;
+                }
 
-                printf("%s -> Average: %.2f, Grade: %c\n",
-                       studentNames[row], avg[row], grade);
+                printf("\nGrade Report:\n");
+                for (row = 0; row < 5; row++) {
+
+                    if (avgMarks[row] >= 90) grade = 'A';
+                    else if (avgMarks[row] >= 80) grade = 'A';
+                    else if (avgMarks[row] >= 70) grade = 'B';
+                    else if (avgMarks[row] >= 60) grade = 'C';
+                    else if (avgMarks[row] >= 50) grade = 'D';
+                    else grade = 'F';
+
+                    printf("%s -> Average: %.2f, Grade: %c\n",
+                           studentNames[row], avgMarks[row], grade);
+                }
+                break;
             }
+
+            case 6:
+                printf("\nExiting Program...\n");
+                break;
+
+            default:
+                printf("\nInvalid Choice! Please try again.\n");
         }
 
     } while (menuChoice != 6);
 
-    printf("\nExiting Program...\n");
     return 0;
 }
